@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-areas:
+        "header header"
+        "nav word-card";
+    background-color: rgb(168, 195, 208);
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: 80px 1fr;
+    row-gap: 10px;
+    column-gap: 15px;
+}
+
+header {
+    grid-area: header;
+    font-size: 40px;
+
+}
+
+.word-card {
+    grid-area: word-card;
+    border: 2px solid white;
+    margin-right: 15%;
+    text-align: center;
+
+}
+
+.nav {
+    grid-area: nav;
+    border: 2px solid white;
+    margin-left: 5%;
+    margin-right: 45%;
+}
+
+#words-head {
+    text-align: center;
+}
