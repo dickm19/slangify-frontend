@@ -1,5 +1,8 @@
 //------------- Global Variables ------------------------------//
 const wordsUrl = "http://localhost:3000/api/v1/words"
+const defsUrl = "http://localhost:3000/api/v1/definitions"
+const exampleUrl = "http://localhost:3000/api/v1/examples"
+
 const wordsList = document.querySelector('.words-list')
 
     
@@ -24,7 +27,7 @@ const renderNav = (wordObj) => {
 
     wordsList.append(wordLi)
 
-    wordLi.addEventListener('click', e => {
+    wordLi.addEventListener('click', () => {
         renderWordObj(wordObj)
     })
 }
@@ -50,11 +53,18 @@ const renderWordObj = (wordObj) => {
         const defCard = document.createElement('div')
         defCard.classList.add('definition')
 
+        const likeCount = definition.likes
+
+        const likeP = document.createElement("p")
+        likeP.textContent = `Likes: ${likeCount}`
+        likeP.dataset.id = definition.id
+
         const defContentP = document.createElement('p')
         defContentP.textContent = definition.content
 
         const likeButton = document.createElement('button')
         likeButton.textContent = "❤️" 
+        
 
         const deleteButton = document.createElement('button')
         deleteButton.textContent = "delete"
@@ -63,15 +73,20 @@ const renderWordObj = (wordObj) => {
         editButton.textContent = "edit"
         
         definitionsDiv.append(defCard)
-        defCard.append(defContentP, likeButton, deleteButton, editButton)
+        defCard.append(defContentP, likeP, likeButton, deleteButton, editButton)
+
+        likeButton.addEventListener("click", () => {
+            likeDef(definition)
+        })
         
     })
-    
+ 
     wordObj.examples.forEach(example => {
         const exampleCard = document.createElement('div')
         exampleCard.classList.add('definition')
         
         const exampleContentP = document.createElement('p')
+       
         exampleContentP.textContent = example.content
         
         const deleteButton = document.createElement('button')
@@ -82,6 +97,8 @@ const renderWordObj = (wordObj) => {
         
         examplesDiv.append(exampleCard)
         exampleCard.append(exampleContentP, deleteButton, editButton)
+
+
         
     })
 
@@ -90,6 +107,28 @@ const renderWordObj = (wordObj) => {
 
 }
 
+function likeDef(def){
+    const likeP = document.querySelector(`[data-id='${def.id}']`)
+    // console.log(likeP)
+    def.likes ++
+    likeP.textContent = `Likes: ${def.likes}`
+    
+    updateLikes(def)
+    
+}
+
+
+function updateLikes(def){
+    fetch(`${defsUrl}/${def.id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Accepts": "application/json"
+        },
+        body: JSON.stringify({likes: def.likes})
+    })
+    .then(resp => resp.json())
+}
 
 
 
