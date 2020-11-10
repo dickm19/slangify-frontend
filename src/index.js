@@ -53,11 +53,15 @@ const renderWordObj = (wordObj) => {
         const defCard = document.createElement('div')
         defCard.classList.add('definition')
 
+
+    
         const likeCount = definition.likes
 
         const likeP = document.createElement("p")
         likeP.textContent = `Likes: ${likeCount}`
         likeP.dataset.id = definition.id
+
+
 
         const defContentP = document.createElement('p')
         defContentP.textContent = definition.content
@@ -65,12 +69,21 @@ const renderWordObj = (wordObj) => {
         const likeButton = document.createElement('button')
         likeButton.textContent = "❤️" 
         
-
+       
         const deleteButton = document.createElement('button')
         deleteButton.textContent = "delete"
 
+        deleteButton.addEventListener("click", () => {
+            defCard.remove()
+            deleteDef(definition)
+        })
+
         const editButton = document.createElement('button')
         editButton.textContent = "edit"
+
+        editButton.addEventListener("click", () => {
+            renderEditForm(definition, defCard)
+        })
         
         definitionsDiv.append(defCard)
         defCard.append(defContentP, likeP, likeButton, deleteButton, editButton)
@@ -98,6 +111,10 @@ const renderWordObj = (wordObj) => {
         examplesDiv.append(exampleCard)
         exampleCard.append(exampleContentP, deleteButton, editButton)
 
+        deleteButton.addEventListener("click", () => {
+            exampleCard.remove()
+            deleteEx(example)
+        })
 
         
     })
@@ -109,27 +126,74 @@ const renderWordObj = (wordObj) => {
 
 function likeDef(def){
     const likeP = document.querySelector(`[data-id='${def.id}']`)
-    // console.log(likeP)
-    def.likes ++
-    likeP.textContent = `Likes: ${def.likes}`
-    
-    updateLikes(def)
+ 
+    const newLikes = def.likes + 1
+    likeP.textContent = `Likes ${newLikes}`
+   
+ 
+    updateLikes(def, newLikes)
     
 }
 
 
-function updateLikes(def){
+function updateLikes(def, newLikes){
+ 
+    
     fetch(`${defsUrl}/${def.id}`, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
             "Accepts": "application/json"
         },
-        body: JSON.stringify({likes: def.likes})
+        body: JSON.stringify({likes: newLikes})
     })
     .then(resp => resp.json())
 }
 
+function deleteDef(def){
+    fetch(`${defsUrl}/${def.id}`, {
+        method: "DELETE"
+    })
+    .then(resp => resp.json())
+}
 
+function deleteEx(example){
+    fetch(`${exampleUrl}/${example.id}`, {
+        method: "DELETE"
+    })
+    .then(resp => resp.json())
+}
 
+function renderEditForm(def, card){
+    const editForm = document.createElement("form")
+    editForm.innerHTML = `
+        <textarea name = "content"></textarea>
+        <input type="submit"></input>
+    `
+    card.append(editForm)
+    editForm.addEventListener("submit", (event) =>{
+        event.preventDefault()
+        submitDefEdit(def, event, card)
+    })
+}
+
+function submitDefEdit(def, event, card){
+    const p = card.querySelector('p')
+ 
+    const content = event.target.content.value
+    p.textContent = content
+    const data = {
+        content: content
+    }
+    fetch(`${defsUrl}/${def.id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Accepts": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(resp => resp.json)
+
+}
 getWords()
