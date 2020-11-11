@@ -2,11 +2,17 @@
 const wordsUrl = "http://localhost:3000/api/v1/words"
 const defsUrl = "http://localhost:3000/api/v1/definitions"
 const exampleUrl = "http://localhost:3000/api/v1/examples"
+const header = document.querySelector("header")
+header.addEventListener("click", () => {
+    location.reload()
+})
+const wordForm = document.querySelector(".word-form")
+wordForm.addEventListener("submit", createNewWord)
 
 // testing to see if the branch is updated
 
 const wordsList = document.querySelector('.words-list')
-const createNewDefForm = document.querySelector('.def-form')
+//const createNewDefForm = document.querySelector('.def-form')
 
 const definitionsDiv = document.querySelector('.definitions')
 // function to fetch words
@@ -37,13 +43,27 @@ const renderNav = (wordObj) => {
 
 const renderWordObj = (wordObj) => {
     const cardDiv = document.querySelector('.word-card')
-    
+    wordForm.remove()
     const examplesDiv = document.querySelector('.examples')
     definitionsDiv.innerHTML = ""
     examplesDiv.innerHTML = ""
-
+    if (document.body.contains(document.querySelector(".def-form"))){
+        console.log("it exists")
+     }else {
+         const defForm = document.createElement("form")
+ 
+         defForm.dataset.id = wordObj.id
+         defForm.classList.add("def-form")
+         defForm.innerHTML = `
+           <label for="content">Add Definition</label><br>
+           <input type="textfield" id="content" name="content" value><br>
+           <input type="submit" value="Submit">
+     
+         `
+         cardDiv.append(defForm)
+     }
     // I did this to give the form of creating a def an id of the word
-    createNewDefForm.dataset.id = wordObj.id 
+    //createNewDefForm.dataset.id = wordObj.id 
 
     const exampleH3 = document.createElement('h3')
         exampleH3.textContent = "Examples"
@@ -54,6 +74,10 @@ const renderWordObj = (wordObj) => {
     definitionsDiv.append(definitionH3)
     const wordTitle = cardDiv.querySelector('h2')
     wordTitle.textContent = wordObj.term
+
+    //console.log(typeof(document.querySelector("def-form")))
+    
+    
 
     wordObj.definitions.forEach(definition => {
         const defCard = document.createElement('div')
@@ -321,5 +345,43 @@ const submitHandler = () => {
     })
 }
 
-submitHandler()
+function createNewWord(event){
+    event.preventDefault()
+    const word = event.target.word.value
+    fetch(wordsUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accepts": "application/json"
+        },
+        body: JSON.stringify({term: word})
+    })
+    .then(resp => resp.json())
+    .then(function(word){
+        createDef(event, word)
+        renderNav(word)
+        
+    })
+    
+}
+
+function createDef(event, word){
+
+    fetch(defsUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accepts": "application/json"
+        },
+        body: JSON.stringify({
+            content: event.target.content.value,
+            likes: 0,
+            word_id: word.id
+        })
+    })
+    .then(resp => resp.json())
+    event.target.reset()
+}
+
+//submitHandler()
 getWords()

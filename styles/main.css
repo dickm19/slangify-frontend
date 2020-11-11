@@ -13,24 +13,36 @@ body {
 }
 
 header {
+    color: black;
     grid-area: header;
     font-size: 40px;
+    font-family: 'Special Elite', cursive;
+    border: 2px solid white;
+    height: 50px;
+    background-color: white;
 
 }
 
 .word-card {
     grid-area: word-card;
     border: 2px solid white;
+    font-family: 'Special Elite', cursive;
     margin-right: 15%;
     text-align: center;
+    width: 300px;
+    height: 500px;
+    overflow: scroll;
 
 }
 
 .nav {
     grid-area: nav;
+    font-family: 'Special Elite', cursive;
     border: 2px solid white;
     margin-left: 5%;
-    margin-right: 45%;
+    margin-right: 20%;
+    height: 500px;
+    overflow: scroll;
 }
 
 #words-head {
