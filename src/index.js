@@ -3,6 +3,8 @@ const wordsUrl = "http://localhost:3000/api/v1/words"
 const defsUrl = "http://localhost:3000/api/v1/definitions"
 const exampleUrl = "http://localhost:3000/api/v1/examples"
 
+// testing to see if the branch is updated
+
 const wordsList = document.querySelector('.words-list')
 const createNewDefForm = document.querySelector('.def-form')
 
