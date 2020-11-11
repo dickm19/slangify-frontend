@@ -6,6 +6,7 @@ const exampleUrl = "http://localhost:3000/api/v1/examples"
 const wordsList = document.querySelector('.words-list')
 const createNewDefForm = document.querySelector('.def-form')
 
+const definitionsDiv = document.querySelector('.definitions')
 // function to fetch words
 const getWords = () => {
     fetch(wordsUrl)
@@ -34,7 +35,7 @@ const renderNav = (wordObj) => {
 
 const renderWordObj = (wordObj) => {
     const cardDiv = document.querySelector('.word-card')
-    const definitionsDiv = document.querySelector('.definitions')
+    
     const examplesDiv = document.querySelector('.examples')
     definitionsDiv.innerHTML = ""
     examplesDiv.innerHTML = ""
@@ -89,8 +90,7 @@ const renderWordObj = (wordObj) => {
 
         likeButton.addEventListener("click", () => {
             likeDef(definition)
-        })
-        
+        }) 
     })
  
     wordObj.examples.forEach(example => {
@@ -204,7 +204,7 @@ function submitDefEdit(def, event, card){
         },
         body: JSON.stringify(data)
     })
-    .then(resp => resp.json)
+    .then(resp => resp.json())
     form.reset()
 }
 
@@ -243,19 +243,80 @@ function submitExampleEdit(example, event, exampleCard){
         },
         body: JSON.stringify(exampleData)
     })
-    .then(resp => resp.json)
+    .then(resp => resp.json())
     
     form.reset()
 }
+
+// ------------ Creating a definition -----------//
+    //For the second .then after the Post request, I had to copy and paste what we did to render the definition
+    // It looks repetitive, but we can always refactor!!!
+    // We have full CRUD working and MVP done 🙌🏾
 
 const submitHandler = () => {
     const createNewDefForm = document.querySelector('.def-form')
     // console.log(createNewDefForm)
     createNewDefForm.addEventListener('submit', e => {
         e.preventDefault()
-        console.log(e.target)
-    })
+        const createForm = e.target
+        const createFormId = createNewDefForm.dataset.id
+        const newContent = createForm.content.value
+        
+        const postData = {
+            content: newContent,
+            word_id: createFormId,
+            likes: 0
+        }
 
+        fetch(defsUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accepts": "application/json"
+            },
+            body: JSON.stringify(postData)
+        })
+        .then(resp => resp.json())
+        .then(createdDef => {
+            const defCard = document.createElement('div')
+                defCard.classList.add('definition')
+    
+            const likeCount = createdDef.likes
+
+            const likeP = document.createElement("p")
+            likeP.textContent = `Likes: ${likeCount}`
+            likeP.dataset.id = createdDef.id
+
+            const defContentP = document.createElement('p')
+            defContentP.textContent = createdDef.content
+
+            const likeButton = document.createElement('button')
+            likeButton.textContent = "❤️" 
+        
+            const deleteButton = document.createElement('button')
+            deleteButton.textContent = "delete"
+
+            deleteButton.addEventListener("click", () => {
+                defCard.remove()
+                deleteDef(createdDef)
+            })
+
+            const editButton = document.createElement('button')
+            editButton.textContent = "edit"
+
+            editButton.addEventListener("click", () => {
+                renderEditForm(createdDef, defCard)
+            })
+        
+            definitionsDiv.append(defCard)
+            defCard.append(defContentP, likeP, likeButton, deleteButton, editButton)
+
+            likeButton.addEventListener("click", () => {
+                likeDef(createdDef)
+            }) 
+        })
+        createForm.reset()
+    })
 }
 
 submitHandler()
