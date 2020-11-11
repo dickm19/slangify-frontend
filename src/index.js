@@ -4,8 +4,8 @@ const defsUrl = "http://localhost:3000/api/v1/definitions"
 const exampleUrl = "http://localhost:3000/api/v1/examples"
 
 const wordsList = document.querySelector('.words-list')
+const createNewDefForm = document.querySelector('.def-form')
 
-    
 // function to fetch words
 const getWords = () => {
     fetch(wordsUrl)
@@ -38,6 +38,9 @@ const renderWordObj = (wordObj) => {
     const examplesDiv = document.querySelector('.examples')
     definitionsDiv.innerHTML = ""
     examplesDiv.innerHTML = ""
+
+    // I did this to give the form of creating a def an id of the word
+    createNewDefForm.dataset.id = wordObj.id 
 
     const exampleH3 = document.createElement('h3')
         exampleH3.textContent = "Examples"
@@ -92,7 +95,7 @@ const renderWordObj = (wordObj) => {
  
     wordObj.examples.forEach(example => {
         const exampleCard = document.createElement('div')
-        exampleCard.classList.add('definition')
+        exampleCard.classList.add('example')
         
         const exampleContentP = document.createElement('p')
        
@@ -103,6 +106,10 @@ const renderWordObj = (wordObj) => {
         
         const editButton = document.createElement('button')
         editButton.textContent = "edit"
+
+        editButton.addEventListener("click", () => {
+            renderExEditForm(example, exampleCard)
+        })
         
         examplesDiv.append(exampleCard)
         exampleCard.append(exampleContentP, deleteButton, editButton)
@@ -114,14 +121,13 @@ const renderWordObj = (wordObj) => {
     })
 
     cardDiv.append(examplesDiv, definitionsDiv)
-    // console.log(wordObj.definitions)
 }
 
 //------- Issues with Likes -----------//
     // 1. We needed to convert the number of likes to an integer
     // 2. Needed to have a variable (currentLikes) that was the initial value 
     // 3. Needed to have a variable (newLikes) that would increase currentLikes by 1
-    // 4. After making a PATCH, we need to make sure to create the second .them since a PATCH returns a response
+    // 4. After making a PATCH, we need to make sure to create the second .then since a PATCH returns a response
 
 
 function likeDef(def){
@@ -135,11 +141,8 @@ function likeDef(def){
     
     // const newLikes = def.likes + 1
     // console.log(newLikes)
- 
     updateLikes(def, newLikes, likeP)
-    
 }
-
 
 function updateLikes(def, newLikes, likeP){
  
@@ -154,7 +157,6 @@ function updateLikes(def, newLikes, likeP){
     .then(resp => resp.json())
     .then(data => {
         likeP.textContent = `Likes ${data.likes}`
-        // console.log(data)
     })
 }
 
@@ -187,8 +189,9 @@ function renderEditForm(def, card){
 
 function submitDefEdit(def, event, card){
     const p = card.querySelector('p')
- 
-    const content = event.target.content.value
+    // console.log(p)
+    const form = event.target
+    const content = form.content.value
     p.textContent = content
     const data = {
         content: content
@@ -202,6 +205,58 @@ function submitDefEdit(def, event, card){
         body: JSON.stringify(data)
     })
     .then(resp => resp.json)
+    form.reset()
+}
+
+// For this step I did the same thing we did for the definitions! 
+// When edit is clicked more than once, the form also appears --> Will fix this 
+// ^^ Maybe has to do with inner.HTML
+
+const renderExEditForm = (example, exampleCard) => {
+    const exampleEditForm = document.createElement("form")
+    exampleEditForm.innerHTML = `
+        <textarea name = "content"></textarea>
+        <input type="submit"></input>
+    `
+    exampleCard.append(exampleEditForm)
+    exampleEditForm.addEventListener("submit", (event) =>{
+        event.preventDefault()
+        submitExampleEdit(example, event, exampleCard)
+    })
+}
+
+function submitExampleEdit(example, event, exampleCard){
+    const exampleP = exampleCard.querySelector('p')
+    const form = event.target
+    const content = form.content.value
+    exampleP.textContent = content
+   
+    const exampleData = {
+        content: content
+    }
+
+    fetch(`${exampleUrl}/${example.id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Accepts": "application/json"
+        },
+        body: JSON.stringify(exampleData)
+    })
+    .then(resp => resp.json)
+    
+    form.reset()
+}
+
+const submitHandler = () => {
+    const createNewDefForm = document.querySelector('.def-form')
+    // console.log(createNewDefForm)
+    createNewDefForm.addEventListener('submit', e => {
+        e.preventDefault()
+        console.log(e.target)
+    })
 
 }
+
+submitHandler()
 getWords()
