@@ -52,16 +52,12 @@ const renderWordObj = (wordObj) => {
     wordObj.definitions.forEach(definition => {
         const defCard = document.createElement('div')
         defCard.classList.add('definition')
-
-
     
         const likeCount = definition.likes
 
         const likeP = document.createElement("p")
         likeP.textContent = `Likes: ${likeCount}`
         likeP.dataset.id = definition.id
-
-
 
         const defContentP = document.createElement('p')
         defContentP.textContent = definition.content
@@ -114,31 +110,39 @@ const renderWordObj = (wordObj) => {
         deleteButton.addEventListener("click", () => {
             exampleCard.remove()
             deleteEx(example)
-        })
-
-        
+        })   
     })
 
     cardDiv.append(examplesDiv, definitionsDiv)
     // console.log(wordObj.definitions)
-
 }
+
+//------- Issues with Likes -----------//
+    // 1. We needed to convert the number of likes to an integer
+    // 2. Needed to have a variable (currentLikes) that was the initial value 
+    // 3. Needed to have a variable (newLikes) that would increase currentLikes by 1
+    // 4. After making a PATCH, we need to make sure to create the second .them since a PATCH returns a response
+
 
 function likeDef(def){
     const likeP = document.querySelector(`[data-id='${def.id}']`)
+    // console.log(likeP)
+    // likeP.textContent = `Likes ${newLikes}`
+    const likeText = likeP.textContent
+    const split = likeText.split(" ")[1]
+    const currentLikes = parseInt(split)
+    const newLikes = currentLikes + 1
+    
+    // const newLikes = def.likes + 1
+    // console.log(newLikes)
  
-    const newLikes = def.likes + 1
-    likeP.textContent = `Likes ${newLikes}`
-   
- 
-    updateLikes(def, newLikes)
+    updateLikes(def, newLikes, likeP)
     
 }
 
 
-function updateLikes(def, newLikes){
+function updateLikes(def, newLikes, likeP){
  
-    
     fetch(`${defsUrl}/${def.id}`, {
         method: "PATCH",
         headers: {
@@ -148,6 +152,10 @@ function updateLikes(def, newLikes){
         body: JSON.stringify({likes: newLikes})
     })
     .then(resp => resp.json())
+    .then(data => {
+        likeP.textContent = `Likes ${data.likes}`
+        // console.log(data)
+    })
 }
 
 function deleteDef(def){
