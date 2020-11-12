@@ -13,23 +13,34 @@ body {
 }
 
 header {
-    color: black;
+    animation-name: example;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
     grid-area: header;
     font-size: 40px;
     font-family: 'Special Elite', cursive;
-    border: 2px solid white;
     height: 50px;
     background-color: white;
 
 }
 
+@keyframes example {
+    0%   {background-color: red;}
+    25%  {background-color: yellow;}
+    50%  {background-color: rgb(16, 168, 2);}
+    75% {background-color: rgb(68, 41, 141);}
+    100% {background-color: red;}
+
+  }
+
 .word-card {
+    
     grid-area: word-card;
     border: 2px solid white;
     font-family: 'Special Elite', cursive;
-    margin-right: 15%;
+    margin-right: 40%;
     text-align: center;
-    width: 300px;
+    width: 700px;
     height: 500px;
     overflow: scroll;
 
@@ -39,12 +50,43 @@ header {
     grid-area: nav;
     font-family: 'Special Elite', cursive;
     border: 2px solid white;
-    margin-left: 5%;
-    margin-right: 20%;
+    margin-left: 10%;
     height: 500px;
+    width: 250px;
     overflow: scroll;
 }
 
 #words-head {
     text-align: center;
 }
+
+button {
+    border-radius: 8px;
+    transition-duration: 0.5s;
+}
+
+button:hover{
+    background-color: rgb(191, 148, 216);
+    color: white;
+}
+
+input[type=textfield] {
+    padding: 10px;
+   margin: 10px 0;
+   box-shadow: 0 0 15px 4px rgba(8, 2, 2, 0.281);
+   border-radius: 12px;
+
+
+  }
+
+  input[type=submit]{
+      margin: 10px;
+      border-radius: 8px;
+      transition-duration: 0.5s;
+  }
+  input[type=submit]:hover {
+    background-color: rgb(191, 148, 216);
+    color: white;
+  }
+
+
