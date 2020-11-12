@@ -1,7 +1,6 @@
-SLANGIFY
+# SLANGIFY
 
-## DEMO VIDEO
-https://drive.google.com/file/d/1krkv2dG19Zgy5Mtt0xAo4uQl-327cKYy/view?usp=sharing
+### [Demo Video](https://youtu.be/nNXFI7AvxfE)
 
 ## APP FEATURES
 This app uses the official Urban Dictionary API to allow the user to create a new term/phrase, define a term, write an example of a term, delete terms, like a term's definition, and edit a term's definitions and examples.
