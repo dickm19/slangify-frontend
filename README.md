@@ -1,6 +1,7 @@
 # SLANGIFY
 
 ### [Demo Video](https://youtu.be/nNXFI7AvxfE)
+![screenshot](https://files.slack.com/files-pri/T02MD9XTF-F01EFCCQJ0N/image.png)
 
 ## APP FEATURES
 This app uses the official Urban Dictionary API to allow the user to create a new term/phrase, define a term, write an example of a term, delete terms, like a term's definition, and edit a term's definitions and examples.
