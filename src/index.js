@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         wordLi.append(deleteWordButton)
      
         wordsList.append(wordLi)
-    
+        wordLi.classList.add("word-li")
         wordLi.addEventListener('click', (e) => {
             if (e.target.matches(".delete-button")){     
                 deleteWord(wordObj)
@@ -109,13 +109,16 @@ document.addEventListener("DOMContentLoaded", () => {
     
         const exampleH3 = document.createElement('h3')
             exampleH3.textContent = "Examples"
+            exampleH3.classList.add("ex-title")
         const definitionH3 = document.createElement('h3')
             definitionH3.textContent = "Definitions"
+            definitionH3.classList.add("def-title")
     
         examplesDiv.append(exampleH3)
         definitionsDiv.append(definitionH3)
         const wordTitle = cardDiv.querySelector('h2')
         wordTitle.textContent = wordObj.term
+        wordTitle.classList.add("word-title")
     
         //console.log(typeof(document.querySelector("def-form")))
         

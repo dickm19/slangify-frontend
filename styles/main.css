@@ -4,8 +4,10 @@ body {
     display: grid;
     grid-template-areas:
         "header header"
-        "nav word-card";
-    background-color: rgb(168, 195, 208);
+        "nav word-card"
+        "footer footer";
+
+    background-color: rgb(163, 206, 189);
     grid-template-columns: 300px 1fr;
     grid-template-rows: 80px 1fr;
     row-gap: 10px;
@@ -14,7 +16,7 @@ body {
 
 header {
     animation-name: example;
-    animation-duration: 4s;
+    animation-duration: 6s;
     animation-iteration-count: infinite;
     grid-area: header;
     font-size: 40px;
@@ -25,34 +27,50 @@ header {
 }
 
 @keyframes example {
-    0%   {background-color: red;}
-    25%  {background-color: yellow;}
-    50%  {background-color: rgb(16, 168, 2);}
-    75% {background-color: rgb(68, 41, 141);}
-    100% {background-color: red;}
+    0%   {background-color: rgb(25, 95, 68);}
+    33%  {background-color: rgb(70, 143, 165);}
+    66%  {background-color: rgb(60, 212, 123);}
+    100% {background-color: rgb(25, 95, 68);}
+
+  }
+
+  @keyframes border-animation {
+    0%   {border-color: rgb(25, 95, 68);}
+    33%  {border-color: rgb(70, 143, 165);}
+    66%  {border-color: rgb(60, 212, 123);}
+    100% {border-color: rgb(25, 95, 68);}
 
   }
 
 .word-card {
-    
+    animation-name: border-animation;
+    animation-duration: 6s;
+    animation-iteration-count: infinite;
     grid-area: word-card;
-    border: 2px solid white;
+    background-color: rgb(93, 138, 117);
+    border: 10px solid white;
     font-family: 'Special Elite', cursive;
     margin-right: 40%;
     text-align: center;
     width: 700px;
     height: 500px;
     overflow: scroll;
+    border-radius: 10px;
 
 }
 
 .nav {
+    background-color: rgb(93, 138, 117);
+    animation-name: border-animation;
+    animation-duration: 6s;
+    animation-iteration-count: infinite;
     grid-area: nav;
     font-family: 'Special Elite', cursive;
-    border: 2px solid white;
+    border: 10px solid white;
     margin-left: 10%;
     height: 500px;
     width: 250px;
+    border-radius: 10px;
     overflow: scroll;
 }
 
@@ -62,11 +80,11 @@ header {
 
 button {
     border-radius: 8px;
-    transition-duration: 0.5s;
+    transition-duration: 0.3s;
 }
 
 button:hover{
-    background-color: rgb(191, 148, 216);
+    background-color: rgb(2, 92, 2);
     color: white;
 }
 
@@ -85,8 +103,95 @@ input[type=textfield] {
       transition-duration: 0.5s;
   }
   input[type=submit]:hover {
-    background-color: rgb(191, 148, 216);
+       background-color: rgb(2, 92, 2);
     color: white;
   }
 
+
+  /* footer{
+      margin-top: 100%;
+      font-size: 10px;
+      font-family: 'Special Elite', cursive;
+  } */
+
+  #creator-credit-panel {
+    grid-area: footer;
+    animation-name: example;
+    animation-duration: 6s;
+    animation-iteration-count: infinite;
+    font-family: 'Raleway', sans-serif;
+    margin-top: 75%;
+    font-weight: bolder;
+    block-size: 40px;
+    text-align: center;
+}
+
+.def-title{
+    width: fit-content;
+    border-radius: 4px;
+    background-color:  rgb(149, 189, 149);
+    margin: auto;
+    margin-top: 5%;
+    border-bottom: 2px solid white;
+}
+
+.ex-title {
+    width: fit-content;
+    border-radius: 4px;
+    background-color:  rgb(149, 189, 149);
+    margin: auto;
+    margin-top: 5%;
+    border-bottom: 2px solid white;
+}
+
+.word-title{
+   
+    width: fit-content;
+    border-radius: 4px;
+    background-color:  rgb(149, 189, 149);
+    margin: auto;
+    margin-bottom: 5%;
+}
+
+.word-form-title{
+    border-radius: 4px;
+    background-color:  rgb(149, 189, 149);
+}
+
+#words-head{
+    border-radius: 4px;
+    background-color:  rgb(149, 189, 149);
+    width: fit-content;
+    margin: auto;
+    margin-top: 5%;
+    
+}
+.example {
+    border-bottom: 2px solid  white;
+    width: 500px;
+    margin: auto;
+}
+
+.definition{
+ border-bottom: 2px solid  white;
+ width: 500px;
+ margin: auto;
+}
+
+.word-li:hover{
+    animation-name: word;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+
+}
+
+
+
+@keyframes word{
+    0%   {color: red;}
+    25%  {color: yellow;}
+    50%  {color: rgb(16, 168, 2);}
+    75% {color: rgb(68, 41, 141);}
+    100% {color: red;}
+}
 
