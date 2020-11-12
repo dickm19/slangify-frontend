@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
              cardDiv.append(defForm)
     
              defForm.addEventListener("submit", (event) => {
-                 e.preventDefault()
+                 event.preventDefault()
                 defFormSubmit(event, wordObj)
              })
          }
